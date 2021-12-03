@@ -1,3 +1,9 @@
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdlibt.h>
+#include <stdiot.h>
+#include <string.h>
+
 int main(int argc, char **argv)
 {
    //run command loop.
