@@ -1,7 +1,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
-#include <stdlibt.h>
-#include <stdiot.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 int main(int argc, char **argv)
@@ -20,7 +20,7 @@ void lsh_loop(void)
 
    do
    {
-      printf(">");
+      printf("> ");
       line = lsh_read_line();
       args = lsh_split_line(line);
       status = lsh_execute(args);
@@ -40,7 +40,7 @@ char *lsh_read_line(void)
 
    if (!buffer)
    {
-      fprintf(sderr, "lsh: allocationerror\n");
+      fprintf(stderr, "lsh: allocationerror\n");
       exit(EXIT_FAILURE);
    }
 
@@ -107,7 +107,7 @@ char **lsh_split_line(char *line)
 
       token = strtok(NULL, LSH_TOK_DELIM);
    }
-   token[position] = NULL;
+   tokens[position] = NULL;
    return tokens;
 }
 
@@ -119,7 +119,7 @@ int lsh_launch(char **args)
    pid = fork();
    if (pid == 0)
    {
-      if (execvp(args[0], arg) == -1)
+      if (execvp(args[0], args) == -1)
       {
          perror("lsh");
       }
@@ -228,3 +228,5 @@ int lsh_execute(char **args)
 
    return lsh_launch(args);
 }
+
+
