@@ -104,3 +104,34 @@ char **lsh_split_line(char *line)
    token[position] = NULL;
    return tokens;
 }
+
+int lsh_launch(char **args)
+{
+   pid_t pid, wpid;
+   int status;
+
+   pid = fork();
+   if (pid == 0)
+   {
+      if (execvp(args[0], arg) == -1)
+      {
+         perror("lsh");
+      }
+      exit(EXIT_FAILURE);
+   }
+   else if (pid < 0)
+   {
+      // Error forking
+      perror("lsh");
+   }
+   else
+   {
+      do
+      {
+         wpid = waitpid(pid, &status, WUNTRACED);
+      } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+   }
+
+   return 1;
+}
+
