@@ -140,7 +140,7 @@ void enableRawMode() {
    if (tcgetattr(STDIN_FILENO, &E.orig_termios) == -1) die("tcgetattr");
    atexit(disableRawMode);
 
-   sstruct termios raw = E.orig_termios;
+   struct termios raw = E.orig_termios;
    raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
    raw.c_oflag &= ~(OPOST);
    raw.c_cflag |= (CS8);
@@ -422,7 +422,7 @@ void editorUpdateRow(erow *row) {
       if (row->chars[j] == '\t') tabs++;
 
    free(row->render);
-   rrow->render = malloc(row->size + tabs*(KILO_TAB_STOP - 1) + 1);
+   row->render = malloc(row->size + tabs*(KILO_TAB_STOP - 1) + 1);
 
    int idx = 0;
    for (j = 0; j < row->size; j++) {
